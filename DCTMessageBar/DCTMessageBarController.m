@@ -16,7 +16,7 @@
 @interface DCTMessageBarController () <DCTMessageBarDelegate, DCTMessageBarInputAccessoryViewDelegate>
 @property (nonatomic, readonly) DCTMessageBarNavigationItem *parentNavigationItem;
 @property (nonatomic, readwrite) UIViewController *viewController;
-@property (nonatomic) IBOutlet NSLayoutConstraint *bottomMarginConstraint;
+@property (nonatomic) NSLayoutConstraint *bottomMarginConstraint;
 @property (nonatomic) UIView *inputAccessoryView;
 @end
 
@@ -26,8 +26,8 @@
 
 - (void)dealloc {
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	[notificationCenter removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-	[notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+	[notificationCenter removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
+//	[notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 	[notificationCenter removeObserver:self name:UIKeyboardDidHideNotification object:nil];
 	[notificationCenter removeObserver:self name:UIKeyboardDidShowNotification object:nil];
 }
@@ -36,8 +36,8 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdirect-ivar-access"
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	[notificationCenter addObserver:self selector:@selector(keyboardWillHideShowNotification:) name:UIKeyboardWillHideNotification object:nil];
-	[notificationCenter addObserver:self selector:@selector(keyboardWillHideShowNotification:) name:UIKeyboardWillShowNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(keyboardWillHideShowNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
+//	[notificationCenter addObserver:self selector:@selector(keyboardWillHideShowNotification:) name:UIKeyboardWillShowNotification object:nil];
 	[notificationCenter addObserver:self selector:@selector(keyboardDidHideShowNotification:) name:UIKeyboardDidHideNotification object:nil];
 	[notificationCenter addObserver:self selector:@selector(keyboardDidHideShowNotification:) name:UIKeyboardDidShowNotification object:nil];
 	_parentNavigationItem = [[DCTMessageBarNavigationItem alloc] initWithChildNavigationItem:_viewController.navigationItem];
