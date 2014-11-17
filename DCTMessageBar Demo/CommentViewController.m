@@ -42,6 +42,20 @@
 	[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[self updateMaximumHeightForSize:self.view.bounds.size];
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator {
+	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+	[self updateMaximumHeightForSize:size];
+}
+
+- (void)updateMaximumHeightForSize:(CGSize)size {
+	self.dct_messageBarController.messageBar.maximumHeight = floorf(size.height / 3.0f);
+}
+
 #pragma mark - DCTMessageBarControllerDelegate
 
 - (void)messageBarControllerSendButtonTapped:(DCTMessageBarController *)messageBarController {
