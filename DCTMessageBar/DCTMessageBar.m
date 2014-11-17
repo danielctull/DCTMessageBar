@@ -148,8 +148,10 @@ const CGFloat DCTMessageBarNoMaximumHeight = 1000000.0f; // CGFLOAT_MAX is too b
 
 	_maximumHeight = maximumHeight;
 
-	self.maximumHeightConstraint.constant = maximumHeight;
-	[self.delegate messageBarNeedsHeightUpdate:self];
+	[UIView performWithoutAnimation:^{
+		self.maximumHeightConstraint.constant = maximumHeight;
+		[self.delegate messageBarNeedsHeightUpdate:self];
+	}];
 }
 
 - (NSLayoutConstraint *)maximumHeightConstraint {
