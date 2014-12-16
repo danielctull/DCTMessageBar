@@ -200,6 +200,15 @@
 
 #pragma mark - DCTMessageBarDelegate
 
+- (BOOL)messageBarShouldBecomeActive:(DCTMessageBar *)messageBar {
+
+	if ([self.delegate respondsToSelector:@selector(messageBarControllerShouldBecomeActive:)]) {
+		return [self.delegate messageBarControllerShouldBecomeActive:self];
+	}
+
+	return YES;
+}
+
 - (void)messageBarNeedsHeightUpdate:(DCTMessageBar *)messageBar {
 	[self updateHeight];
 }

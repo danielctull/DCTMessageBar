@@ -12,7 +12,7 @@
 const BOOL DCTMessageBarDebug = YES;
 const CGFloat DCTMessageBarNoMaximumHeight = 1000000.0f; // CGFLOAT_MAX is too big for layout constraints apparently
 
-@interface DCTMessageBar ()
+@interface DCTMessageBar () <UITextViewDelegate>
 @property (nonatomic) IBOutlet DCTMessageBarTextView *mbTextView;
 @property (nonatomic) IBOutlet UITextView *placeholderTextView;
 @property (nonatomic) IBOutlet UIButton *sendButton;
@@ -102,7 +102,7 @@ const CGFloat DCTMessageBarNoMaximumHeight = 1000000.0f; // CGFLOAT_MAX is too b
 	_mbTextView = mbTextView;
 
 	if (_mbTextView) {
-		[notificationCenter addObserver:self selector:@selector(textViewDidChange:) name:UITextViewTextDidChangeNotification object:_mbTextView];
+		[notificationCenter addObserver:self selector:@selector(textViewDidChangeNotification:) name:UITextViewTextDidChangeNotification object:_mbTextView];
 	}
 
 	_mbTextView.layer.cornerRadius = 6.0f;
@@ -172,7 +172,11 @@ const CGFloat DCTMessageBarNoMaximumHeight = 1000000.0f; // CGFLOAT_MAX is too b
 
 #pragma mark - UITextViewDelegate
 
-- (void)textViewDidChange:(NSNotification *)notification {
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+	return [self.delegate messageBarShouldBecomeActive:self];
+}
+
+- (void)textViewDidChangeNotification:(NSNotification *)notification {
 	[self.delegate messageBar:self didChangeText:self.textView.text];
 	[self.delegate messageBarNeedsHeightUpdate:self];
 	[self updateViews];

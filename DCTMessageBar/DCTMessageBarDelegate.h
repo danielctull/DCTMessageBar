@@ -11,6 +11,7 @@
 
 @protocol DCTMessageBarDelegate <NSObject>
 
+- (BOOL)messageBarShouldBecomeActive:(DCTMessageBar *)messageBar;
 - (void)messageBarNeedsHeightUpdate:(DCTMessageBar *)messageBar;
 - (void)messageBarSendButtonTapped:(DCTMessageBar *)messageBar;
 - (void)messageBar:(DCTMessageBar *)messageBar didChangeText:(NSString *)text;
