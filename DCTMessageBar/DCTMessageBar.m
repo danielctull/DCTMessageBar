@@ -9,7 +9,7 @@
 #import "DCTMessageBar.h"
 #import "DCTMessageBarTextView.h"
 
-const BOOL DCTMessageBarDebug = YES;
+const BOOL DCTMessageBarDebug = NO;
 const CGFloat DCTMessageBarNoMaximumHeight = 1000000.0f; // CGFLOAT_MAX is too big for layout constraints apparently
 
 @interface DCTMessageBar () <UITextViewDelegate>
