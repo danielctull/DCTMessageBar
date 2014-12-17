@@ -50,6 +50,7 @@ const CGFloat DCTMessageBarNoMaximumHeight = 1000000.0f; // CGFLOAT_MAX is too b
 
 - (void)awakeFromNib {
 	[super awakeFromNib];
+	self.enabled = YES;
 	if (DCTMessageBarDebug) {
 		self.textView.backgroundColor = [[UIColor purpleColor] colorWithAlphaComponent:0.1f];
 	}
@@ -80,6 +81,14 @@ const CGFloat DCTMessageBarNoMaximumHeight = 1000000.0f; // CGFLOAT_MAX is too b
 
 #pragma mark - DCTMessageBar
 
+- (void)setEnabled:(BOOL)enabled {
+
+	if (_enabled == enabled) return;
+
+	_enabled = enabled;
+	[self updateViews];
+}
+
 - (UITextView *)textView {
 	return self.mbTextView;
 }
@@ -88,7 +97,8 @@ const CGFloat DCTMessageBarNoMaximumHeight = 1000000.0f; // CGFLOAT_MAX is too b
 	BOOL empty = self.textView.text.length == 0;
 	CGFloat alpha = empty ? 1.0f : 0.0f;
 	self.placeholderTextView.alpha = alpha;
-	self.sendButton.enabled = !empty;
+	self.sendButton.enabled = !empty && self.enabled;
+	self.textView.textColor = self.enabled ? [UIColor blackColor] : [UIColor lightGrayColor];
 }
 
 - (void)setMbTextView:(DCTMessageBarTextView *)mbTextView {

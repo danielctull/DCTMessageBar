@@ -30,4 +30,6 @@ FOUNDATION_EXPORT const unsigned char DCTMessageBarVersionString[];
 
 @property (nonatomic) CGFloat maximumHeight;
 
+@property (nonatomic) BOOL enabled;
+
 @end
