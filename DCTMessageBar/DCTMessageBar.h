@@ -11,6 +11,7 @@
 #import "DCTMessageBarController.h"
 #import "DCTMessageBarControllerDelegate.h"
 #import "UIViewController+DCTMessageBarController.h"
+#import "DCTMessageBarNavigationItem.h"
 
 extern const BOOL DCTMessageBarDebug;
 extern const CGFloat DCTMessageBarNoMaximumHeight;
