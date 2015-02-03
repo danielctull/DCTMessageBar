@@ -80,6 +80,7 @@ const struct DCTMessageBarNavigationItemAttributes DCTMessageBarNavigationItemAt
 	}
 
 	id value = [self.childNavigationItem valueForKeyPath:keyPath];
+	NSLog(@"%@:%@ %@ %@", self, NSStringFromSelector(_cmd), keyPath, value);
 	[self setValue:value forKeyPath:keyPath];
 }
 

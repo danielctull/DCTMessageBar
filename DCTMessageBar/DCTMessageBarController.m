@@ -9,12 +9,10 @@
 #import "DCTMessageBarController.h"
 #import "DCTMessageBarControllerDelegate.h"
 #import "DCTMessageBar.h"
-#import "DCTMessageBarNavigationItem.h"
 #import "DCTMessageBarSetBottomLayoutGuide.h"
 #import "DCTMessageBarLayoutGuide.h"
 
 @interface DCTMessageBarController () <DCTMessageBarDelegate>
-@property (nonatomic, readonly) DCTMessageBarNavigationItem *parentNavigationItem;
 @property (nonatomic, readwrite) UIViewController *viewController;
 @property (nonatomic) NSLayoutConstraint *bottomMarginConstraint;
 @end
@@ -31,14 +29,10 @@
 }
 
 - (void)sharedInit {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdirect-ivar-access"
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(keyboardWillChangeFrameNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
 	[notificationCenter addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
 	[notificationCenter addObserver:self selector:@selector(keyboardDidShowNotification:) name:UIKeyboardDidShowNotification object:nil];
-	_parentNavigationItem = [[DCTMessageBarNavigationItem alloc] initWithChildNavigationItem:_viewController.navigationItem];
-#pragma clang diagnostic pop
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
@@ -209,15 +203,6 @@
 }
 
 #pragma mark - UIViewController Containment
-
-- (void)setViewController:(UIViewController *)viewController {
-	_viewController = viewController;
-	self.parentNavigationItem.childNavigationItem = viewController.navigationItem;
-}
-
-- (UINavigationItem *)navigationItem {
-	return self.parentNavigationItem;
-}
 
 - (UIViewController *)childViewControllerForStatusBarStyle {
 	return self.viewController;
