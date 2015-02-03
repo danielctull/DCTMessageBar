@@ -10,6 +10,8 @@
 #import "DCTMessageBarControllerDelegate.h"
 #import "DCTMessageBar.h"
 #import "DCTMessageBarNavigationItem.h"
+#import "DCTMessageBarSetBottomLayoutGuide.h"
+#import "DCTMessageBarLayoutGuide.h"
 
 @interface DCTMessageBarController () <DCTMessageBarDelegate>
 @property (nonatomic, readonly) DCTMessageBarNavigationItem *parentNavigationItem;
@@ -24,6 +26,8 @@
 - (void)dealloc {
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
+	[notificationCenter removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+	[notificationCenter removeObserver:self name:UIKeyboardDidShowNotification object:nil];
 }
 
 - (void)sharedInit {
@@ -31,6 +35,8 @@
 #pragma clang diagnostic ignored "-Wdirect-ivar-access"
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(keyboardWillChangeFrameNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(keyboardDidShowNotification:) name:UIKeyboardDidShowNotification object:nil];
 	_parentNavigationItem = [[DCTMessageBarNavigationItem alloc] initWithChildNavigationItem:_viewController.navigationItem];
 #pragma clang diagnostic pop
 }
@@ -107,6 +113,13 @@
 	}
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	CGFloat length = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(self.messageBar.frame);
+	DCTMessageBarLayoutGuide *guide = [[DCTMessageBarLayoutGuide alloc] initWithLength:length];
+	[self sendBottomLayoutGuideToChildViewControllers:guide];
+}
+
 #pragma mark - DCTMessageBarController
 
 - (void)updateHeight {
@@ -117,7 +130,20 @@
 
 	[UIView animateWithDuration:0.5f delay:0.0f usingSpringWithDamping:0.7f initialSpringVelocity:0.7f options:0 animations:^{
 		[self.messageBar layoutIfNeeded];
+
+		CGFloat length = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(self.messageBar.frame);
+		DCTMessageBarLayoutGuide *guide = [[DCTMessageBarLayoutGuide alloc] initWithLength:length];
+		[self sendBottomLayoutGuideToChildViewControllers:guide];
 	} completion:nil];
+}
+
+- (void)sendBottomLayoutGuideToChildViewControllers:(id<UILayoutSupport>)guide {
+	for (UIViewController *viewController in self.childViewControllers) {
+		if ([viewController conformsToProtocol:@protocol(DCTMessageBarSetBottomLayoutGuide)]) {
+			id<DCTMessageBarSetBottomLayoutGuide> guideViewController = (id<DCTMessageBarSetBottomLayoutGuide>)viewController;
+			[guideViewController setBottomLayoutGuide:guide];
+		}
+	}
 }
 
 #pragma mark - UIKeyboard Notifications
@@ -141,6 +167,18 @@
 	[UIView setAnimationCurve:animationCurve];
 	[self.messageBar layoutIfNeeded];
 	[UIView commitAnimations];
+}
+
+- (void)keyboardDidShowNotification:(NSNotification *)notification {
+	CGFloat length = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(self.messageBar.frame);
+	DCTMessageBarLayoutGuide *guide = [[DCTMessageBarLayoutGuide alloc] initWithLength:length];
+	[self sendBottomLayoutGuideToChildViewControllers:guide];
+}
+
+- (void)keyboardWillHideNotification:(NSNotification *)notification {
+	CGFloat length = CGRectGetHeight(self.messageBar.bounds);
+	DCTMessageBarLayoutGuide *guide = [[DCTMessageBarLayoutGuide alloc] initWithLength:length];
+	[self sendBottomLayoutGuideToChildViewControllers:guide];
 }
 
 #pragma mark - DCTMessageBarDelegate
