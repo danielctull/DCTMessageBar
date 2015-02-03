@@ -9,15 +9,12 @@
 #import "DCTMessageBarController.h"
 #import "DCTMessageBarControllerDelegate.h"
 #import "DCTMessageBar.h"
-#import "DCTMessageBarInputAccessoryView.h"
-#import "DCTMessageBarInputAccessoryViewDelegate.h"
 #import "DCTMessageBarNavigationItem.h"
 
-@interface DCTMessageBarController () <DCTMessageBarDelegate, DCTMessageBarInputAccessoryViewDelegate>
+@interface DCTMessageBarController () <DCTMessageBarDelegate>
 @property (nonatomic, readonly) DCTMessageBarNavigationItem *parentNavigationItem;
 @property (nonatomic, readwrite) UIViewController *viewController;
 @property (nonatomic) NSLayoutConstraint *bottomMarginConstraint;
-@property (nonatomic) UIView *inputAccessoryView;
 @end
 
 @implementation DCTMessageBarController
@@ -27,19 +24,13 @@
 - (void)dealloc {
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
-//	[notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-	[notificationCenter removeObserver:self name:UIKeyboardDidHideNotification object:nil];
-	[notificationCenter removeObserver:self name:UIKeyboardDidShowNotification object:nil];
 }
 
 - (void)sharedInit {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdirect-ivar-access"
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-	[notificationCenter addObserver:self selector:@selector(keyboardWillHideShowNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
-//	[notificationCenter addObserver:self selector:@selector(keyboardWillHideShowNotification:) name:UIKeyboardWillShowNotification object:nil];
-	[notificationCenter addObserver:self selector:@selector(keyboardDidHideShowNotification:) name:UIKeyboardDidHideNotification object:nil];
-	[notificationCenter addObserver:self selector:@selector(keyboardDidHideShowNotification:) name:UIKeyboardDidShowNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(keyboardWillChangeFrameNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
 	_parentNavigationItem = [[DCTMessageBarNavigationItem alloc] initWithChildNavigationItem:_viewController.navigationItem];
 #pragma clang diagnostic pop
 }
@@ -116,25 +107,7 @@
 	}
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-
-	[UIView performWithoutAnimation:^{
-		[self reloadInputAccessoryView];
-	}];
-}
-
-- (BOOL)canBecomeFirstResponder {
-	return YES;
-}
-
 #pragma mark - DCTMessageBarController
-
-- (void)setInputAccessoryView:(UIView *)inputAccessoryView {
-	_inputAccessoryView = inputAccessoryView;
-	[self reloadInputViews];
-	[self.messageBar.textView reloadInputViews]; // Because when typing the textview is the firstResponder
-}
 
 - (void)updateHeight {
 
@@ -145,57 +118,29 @@
 	[UIView animateWithDuration:0.5f delay:0.0f usingSpringWithDamping:0.7f initialSpringVelocity:0.7f options:0 animations:^{
 		[self.messageBar layoutIfNeeded];
 	} completion:nil];
-	[self reloadInputAccessoryView];
-}
-
-- (void)reloadInputAccessoryView {
-
-	NSInteger inputAccessoryHeight = CGRectGetHeight(self.inputAccessoryView.bounds) + 0.5f;
-	NSInteger messageBarHeight = CGRectGetHeight(self.messageBar.bounds) + 0.5f;
-
-	if (inputAccessoryHeight == messageBarHeight) {
-		return;
-	}
-
-	DCTMessageBarInputAccessoryView *inputAccessoryView = [[DCTMessageBarInputAccessoryView alloc] initWithFrame:self.messageBar.bounds];
-	inputAccessoryView.backgroundColor = DCTMessageBarDebug ? [[UIColor yellowColor] colorWithAlphaComponent:0.1f] : [UIColor clearColor];
-	inputAccessoryView.userInteractionEnabled = NO;
-	inputAccessoryView.delegate = self;
-	self.inputAccessoryView = inputAccessoryView;
-}
-
-- (void)setKeyboardFrame:(CGRect)keyboardFrame {
-
-	CGFloat inputHeight = CGRectGetHeight(self.inputAccessoryView.bounds);
-	CGFloat keyboardMinY = CGRectGetMinY(keyboardFrame);
-	CGFloat viewHeight = CGRectGetHeight(self.messageBar.superview.bounds);
-
-	CGFloat value = viewHeight - keyboardMinY - inputHeight;
-
-	if (value < 0) value = 0;
-	self.bottomMarginConstraint.constant = value;
 }
 
 #pragma mark - UIKeyboard Notifications
 
-- (void)keyboardWillHideShowNotification:(NSNotification *)notification {
+- (void)keyboardWillChangeFrameNotification:(NSNotification *)notification {
 
 	NSDictionary *userInfo = notification.userInfo;
 	CGRect keyboardEndFrame = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	UIViewAnimationCurve animationCurve = [userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
 	NSTimeInterval animationDuration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] integerValue];
 
-	[self setKeyboardFrame:keyboardEndFrame];
+	CGFloat keyboardMinY = CGRectGetMinY(keyboardEndFrame);
+	CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
+	CGFloat value = viewHeight - keyboardMinY;
+
+	if (value < 0) value = 0;
+	self.bottomMarginConstraint.constant = value;
 
 	[UIView beginAnimations:nil context:nil];
 	[UIView setAnimationDuration:animationDuration];
 	[UIView setAnimationCurve:animationCurve];
 	[self.messageBar layoutIfNeeded];
 	[UIView commitAnimations];
-}
-
-- (void)keyboardDidHideShowNotification:(NSNotification *)notification {
-	[self reloadInputAccessoryView];
 }
 
 #pragma mark - DCTMessageBarDelegate
@@ -223,12 +168,6 @@
 	if ([self.delegate respondsToSelector:@selector(messageBarControllerSendButtonTapped:)]) {
 		[self.delegate messageBarControllerSendButtonTapped:self];
 	}
-}
-
-#pragma mark - DCTMessageBarInputAccessoryViewDelegate
-
-- (void)inputAccessoryView:(DCTMessageBarInputAccessoryView *)inputAccessoryView keyboardDidChangeFrame:(CGRect)frame {
-	[self setKeyboardFrame:frame];
 }
 
 #pragma mark - UIViewController Containment
