@@ -29,8 +29,6 @@
 		24F6C84F1A1772E7005D595D /* DCTMessageBarControllerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 24F6C84C1A176FC4005D595D /* DCTMessageBarControllerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24F6C8521A1774E2005D595D /* UIViewController+DCTMessageBarController.h in Headers */ = {isa = PBXBuildFile; fileRef = 24F6C8501A1774E2005D595D /* UIViewController+DCTMessageBarController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24F6C8531A1774E2005D595D /* UIViewController+DCTMessageBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24F6C8511A1774E2005D595D /* UIViewController+DCTMessageBarController.m */; };
-		24F6C85A1A178434005D595D /* DCTMessageBarNavigationItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 24F6C8581A178434005D595D /* DCTMessageBarNavigationItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		24F6C85B1A178434005D595D /* DCTMessageBarNavigationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 24F6C8591A178434005D595D /* DCTMessageBarNavigationItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,8 +99,6 @@
 		24F6C84C1A176FC4005D595D /* DCTMessageBarControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DCTMessageBarControllerDelegate.h; sourceTree = "<group>"; };
 		24F6C8501A1774E2005D595D /* UIViewController+DCTMessageBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DCTMessageBarController.h"; sourceTree = "<group>"; };
 		24F6C8511A1774E2005D595D /* UIViewController+DCTMessageBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DCTMessageBarController.m"; sourceTree = "<group>"; };
-		24F6C8581A178434005D595D /* DCTMessageBarNavigationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCTMessageBarNavigationItem.h; sourceTree = "<group>"; };
-		24F6C8591A178434005D595D /* DCTMessageBarNavigationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCTMessageBarNavigationItem.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,8 +196,6 @@
 			children = (
 				24D55E0019D80B09005E2016 /* DCTMessageBarTextView.h */,
 				24D55E0119D80B09005E2016 /* DCTMessageBarTextView.m */,
-				24F6C8581A178434005D595D /* DCTMessageBarNavigationItem.h */,
-				24F6C8591A178434005D595D /* DCTMessageBarNavigationItem.m */,
 				24B1EC5F1A81166800EEF1A4 /* DCTMessageBarLayoutGuide.h */,
 				24B1EC601A81166800EEF1A4 /* DCTMessageBarLayoutGuide.m */,
 			);
@@ -219,7 +213,6 @@
 				24B1EC611A81166800EEF1A4 /* DCTMessageBarLayoutGuide.h in Headers */,
 				24F6C83C1A16644C005D595D /* DCTMessageBarController.h in Headers */,
 				24F6C84F1A1772E7005D595D /* DCTMessageBarControllerDelegate.h in Headers */,
-				24F6C85A1A178434005D595D /* DCTMessageBarNavigationItem.h in Headers */,
 				24F6C8521A1774E2005D595D /* UIViewController+DCTMessageBarController.h in Headers */,
 				24B1EC641A8117EB00EEF1A4 /* DCTMessageBarSetBottomLayoutGuide.h in Headers */,
 				24D55E0519D80B09005E2016 /* DCTMessageBarTextView.h in Headers */,
@@ -361,7 +354,6 @@
 				24F6C8531A1774E2005D595D /* UIViewController+DCTMessageBarController.m in Sources */,
 				24D55E0319D80B09005E2016 /* DCTMessageBar.m in Sources */,
 				24B1EC621A81166800EEF1A4 /* DCTMessageBarLayoutGuide.m in Sources */,
-				24F6C85B1A178434005D595D /* DCTMessageBarNavigationItem.m in Sources */,
 				24F6C83D1A16644C005D595D /* DCTMessageBarController.m in Sources */,
 				24D55E0619D80B09005E2016 /* DCTMessageBarTextView.m in Sources */,
 			);
