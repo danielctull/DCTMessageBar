@@ -144,6 +144,10 @@
 
 - (void)keyboardWillChangeFrameNotification:(NSNotification *)notification {
 
+	if (!self.messageBar.textView.isFirstResponder) {
+		return;
+	}
+
 	NSDictionary *userInfo = notification.userInfo;
 	CGRect keyboardEndFrame = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	UIViewAnimationCurve animationCurve = [userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
@@ -164,12 +168,22 @@
 }
 
 - (void)keyboardDidShowNotification:(NSNotification *)notification {
+
+	if (!self.messageBar.textView.isFirstResponder) {
+		return;
+	}
+
 	CGFloat length = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(self.messageBar.frame);
 	DCTMessageBarLayoutGuide *guide = [[DCTMessageBarLayoutGuide alloc] initWithLength:length];
 	[self sendBottomLayoutGuideToChildViewControllers:guide];
 }
 
 - (void)keyboardWillHideNotification:(NSNotification *)notification {
+
+	if (!self.messageBar.textView.isFirstResponder) {
+		return;
+	}
+
 	CGFloat length = CGRectGetHeight(self.messageBar.bounds);
 	DCTMessageBarLayoutGuide *guide = [[DCTMessageBarLayoutGuide alloc] initWithLength:length];
 	[self sendBottomLayoutGuideToChildViewControllers:guide];
