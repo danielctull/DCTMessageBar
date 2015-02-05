@@ -114,6 +114,21 @@
 	[self sendBottomLayoutGuideToChildViewControllers:guide];
 }
 
+- (void)viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+
+	CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
+	CGFloat third = viewHeight / 3.0f;
+
+	CGFloat top = self.topLayoutGuide.length;
+	CGFloat bottom = self.bottomMarginConstraint.constant;
+
+	if (top > 0) top--; // This is likely a nav bar, so just tuck under to not have a double-width border line.
+
+	CGFloat space = viewHeight - top - bottom;
+	self.messageBar.maximumHeight = MIN(third, space);
+}
+
 #pragma mark - DCTMessageBarController
 
 - (void)updateHeight {
