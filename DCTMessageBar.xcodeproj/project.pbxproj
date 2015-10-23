@@ -268,7 +268,7 @@
 		24C949D119C4289200BF16D8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Daniel Tull";
 				TargetAttributes = {
 					24C949D819C4289200BF16D8 = {
@@ -398,7 +398,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 24D55E0819D80B68005E2016 /* Debug.xcconfig */;
 			buildSettings = {
-				ONLY_ACTIVE_ARCH = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.danieltull.$(PRODUCT_NAME:rfc1034identifier)";
 			};
 			name = Debug;
@@ -407,6 +407,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 24D55E0F19D80B68005E2016 /* Release.xcconfig */;
 			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.danieltull.$(PRODUCT_NAME:rfc1034identifier)";
 			};
 			name = Release;
@@ -435,7 +436,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 24D55E0B19D80B68005E2016 /* iOS Framework.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 1;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -453,7 +453,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 24D55E0B19D80B68005E2016 /* iOS Framework.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 1;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
