@@ -93,6 +93,10 @@ const CGFloat DCTMessageBarNoMaximumHeight = 1000000.0f; // CGFLOAT_MAX is too b
 	return self.mbTextView;
 }
 
+- (UIButton *)button {
+	return self.sendButton;
+}
+
 - (void)updateViews {
 	BOOL empty = self.textView.text.length == 0;
 	CGFloat alpha = empty ? 1.0f : 0.0f;
