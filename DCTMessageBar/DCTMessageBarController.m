@@ -11,6 +11,7 @@
 #import "DCTMessageBar.h"
 #import "DCTMessageBarSetBottomLayoutGuide.h"
 #import "DCTMessageBarLayoutGuide.h"
+#import "DCTMessageBarKeyboardObserver.h"
 
 @interface DCTMessageBarController () <DCTMessageBarDelegate>
 @property (nonatomic, readwrite) UIViewController *viewController;
@@ -107,6 +108,12 @@
 	}
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	CGRect keyboardFrame = [DCTMessageBarKeyboardObserver sharedKeyboardObserver].keyboardFrame;
+	[self setBottomMarginConstraintWithKeyboardFrame:keyboardFrame];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	CGFloat length = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(self.messageBar.frame);
@@ -155,6 +162,19 @@
 	}
 }
 
+- (void)setBottomMarginConstraintWithKeyboardFrame:(CGRect)frame {
+
+	CGFloat value = 0;
+	if (!CGRectEqualToRect(frame, CGRectNull)) {
+		CGFloat keyboardMinY = CGRectGetMinY(frame);
+		CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
+		value = viewHeight - keyboardMinY;
+	}
+
+	if (value < 0) value = 0;
+	self.bottomMarginConstraint.constant = value;
+}
+
 #pragma mark - UIKeyboard Notifications
 
 - (void)keyboardWillChangeFrameNotification:(NSNotification *)notification {
@@ -164,14 +184,7 @@
 	UIViewAnimationCurve animationCurve = [userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
 	NSTimeInterval animationDuration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] integerValue];
 
-	NSLog(@"%@:%@ %@", self, NSStringFromSelector(_cmd), userInfo);
-
-	CGFloat keyboardMinY = CGRectGetMinY(keyboardEndFrame);
-	CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
-	CGFloat value = viewHeight - keyboardMinY;
-
-	if (value < 0) value = 0;
-	self.bottomMarginConstraint.constant = value;
+	[self setBottomMarginConstraintWithKeyboardFrame:keyboardEndFrame];
 
 	[UIView beginAnimations:nil context:nil];
 	[UIView setAnimationDuration:animationDuration];
