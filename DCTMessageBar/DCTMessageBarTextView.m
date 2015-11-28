@@ -77,11 +77,7 @@
 
 	UITextPosition *position = self.selectedTextRange.end;
 	CGRect caretRect = [self caretRectForPosition:position];
-//	rect.size.height += self.textContainerInset.bottom;
 
-	NSLog(@"------");
-	NSLog(@"rect: %@", NSStringFromCGRect(rect));
-	NSLog(@"caret: %@", NSStringFromCGRect(caretRect));
 	[super scrollRectToVisible:caretRect animated:NO];
 }
 
