@@ -470,6 +470,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2479848C1D9EB0960046AACE /* Debug.xcconfig */;
 			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.danieltull.$(PRODUCT_NAME:rfc1034identifier)";
 			};
@@ -479,6 +480,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2479849E1D9EB0960046AACE /* Release.xcconfig */;
 			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.danieltull.$(PRODUCT_NAME:rfc1034identifier)";
 			};
